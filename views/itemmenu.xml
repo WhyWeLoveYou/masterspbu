@@ -6,7 +6,7 @@
             <field name='view_mode'>tree,form</field>
             <field name='help' type='html'>
                 <p class="o_view_content_smiling_face">
-                    Apa ini
+                    ...
                 </p>
             </field>
         </record>
@@ -22,4 +22,5 @@
                 parent="parent_report_ids"
                 action="premium_action"/>
         </data>
+       
 </odoo>
