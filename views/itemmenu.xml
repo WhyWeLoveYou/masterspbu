@@ -1,0 +1,25 @@
+<odoo>
+    <data>
+        <record id='premium_action' model='ir.actions.act_window'>
+            <field name='name'>Premium</field>
+            <field name='res_model'>master_spbu.premium</field>
+            <field name='view_mode'>tree,form</field>
+            <field name='help' type='html'>
+                <p class="o_view_content_smiling_face">
+                    Apa ini
+                </p>
+            </field>
+        </record>
+    
+        <menuitem
+            id="parent_report_ids"
+            name="Master SPBU"
+            sequence="5"/>
+            <menuitem
+                id="child_pembelian_ids"
+                name="Pembelian"
+                sequence="1"
+                parent="parent_report_ids"
+                action="premium_action"/>
+        </data>
+</odoo>
