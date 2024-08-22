@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_master_spbu_master_spbu,master_spbu.master_spbu,model_master_spbu_master_spbu,base.group_user,1,1,1,1
+aster_spbu.access_master_spbu_premium,access_master_spbu_premium,master_spbu.model_master_spbu_premium,base.group_user,1,1,1,1
+master_spbu.access_master_spbu_premium_line,access_master_spbu_premium_line,master_spbu.model_master_spbu_premium_line,base.group_user,1,1,1,1

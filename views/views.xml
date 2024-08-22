@@ -1,60 +1,51 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="master_spbu.list">
-      <field name="name">MasterSpbu list</field>
-      <field name="model">master_spbu.master_spbu</field>
+    <record id="master_spbu_view_tree" model="ir.ui.view">
+      <field name="name">master_spbu.tree</field>
+      <field name="model">master_spbu.premium</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="tanggal"/>
         </tree>
       </field>
     </record>
--->
 
-    <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="master_spbu.action_window">
-      <field name="name">MasterSpbu window</field>
-      <field name="res_model">master_spbu.master_spbu</field>
-      <field name="view_mode">tree,form</field>
+    <record id='master_spbu_view_form' model='ir.ui.view'>
+      <field name="name">master_spbu.form</field>
+      <field name="model">master_spbu.premium</field>
+      <field name="arch" type="xml">
+        <form string="Report">
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="tanggal"/>
+            </group>
+            <notebook>
+              <page string="Product">
+                <field name="premium_line_ids" nonlabel="1" options="{'reload_on_button': true}">
+                  <tree string="Product" editable="bottom" edit="true" create="true" delete="true">
+                    <field name="tanggal"/>
+                    <field name="stock_awal"/>
+                    <field name="kiriman"/>
+                    <field name="tera"/>
+                    <field name="t1"/>
+                    <field name="t2"/>
+                    <field name="t3"/>
+                    <field name="t4"/>
+                    <field name="laku"/>
+                    <field name="rupiah"/>
+                    <field name="stock_akhir"/>
+                    <field name="stock_tangki"/>
+                    <field name="selisih"/>
+                    <field name="akumulasi"/>
+                  </tree>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+        </field>
     </record>
--->
-
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="master_spbu.action_server">
-      <field name="name">MasterSpbu server</field>
-      <field name="model_id" ref="model_master_spbu_master_spbu"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
-      </field>
-    </record>
--->
-
-    <!-- Top menu item -->
-<!--
-    <menuitem name="MasterSpbu" id="master_spbu.menu_root"/>
--->
-    <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="master_spbu.menu_1" parent="master_spbu.menu_root"/>
-    <menuitem name="Menu 2" id="master_spbu.menu_2" parent="master_spbu.menu_root"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="master_spbu.menu_1_list" parent="master_spbu.menu_1"
-              action="master_spbu.action_window"/>
-    <menuitem name="Server to list" id="master_spbu" parent="master_spbu.menu_2"
-              action="master_spbu.action_server"/>
--->
   </data>
 </odoo>
