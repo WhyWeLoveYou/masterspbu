@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <record id='premium_action' model='ir.actions.act_window'>
-            <field name='name'>Premium</field>
+            <field name='name'>akumulasi</field>
             <field name='res_model'>master_spbu.premium</field>
             <field name='view_mode'>tree,form</field>
             <field name='help' type='html'>
