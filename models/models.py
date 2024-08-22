@@ -70,4 +70,5 @@ class Premium2Line(models.Model):
     tebusan = fields.Float(string='tebusan', default=0.0)
     kiriman = fields.Float(string='kiriman', default=0.0)
     sisa_do = fields.Float(string='sisa do', default=0.0)
-    
+
+
