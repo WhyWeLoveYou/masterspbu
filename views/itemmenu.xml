@@ -17,7 +17,7 @@
             sequence="5"/>
             <menuitem
                 id="child_premium_ids"
-                name="Premium"
+                name="akumulasi"
                 sequence="1"
                 parent="parent_report_ids"
                 action="premium_action"/>
