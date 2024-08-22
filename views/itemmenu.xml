@@ -11,15 +11,33 @@
             </field>
         </record>
     
+        <record id='premium2_action' model='ir.actions.act_window'>
+            <field name='name'>Premium2</field>
+            <field name='res_model'>master_spbu.premium2</field>
+            <field name='view_mode'>tree,form</field>
+            <field name='help' type='html'>
+                <p class="o_view_content_smiling_face">
+                    Apa itu
+                </p>
+            </field>
+        </record>
+
+
         <menuitem
             id="parent_report_ids"
             name="Master SPBU"
             sequence="5"/>
             <menuitem
-                id="child_premium_ids"
-                name="Premium"
+                id="child_pembelian_ids"
+                name="Pembelian"
                 sequence="1"
                 parent="parent_report_ids"
                 action="premium_action"/>
+            
+            <menuitem id="child_premium2_ids"
+                name="Pengiriman"
+                sequence="2"
+                parent="parent_report_ids"
+                action="premium2_action"/>
         </data>
 </odoo>

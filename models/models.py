@@ -10,6 +10,14 @@ class Premium(models.Model):
     tanggal = fields.Date(string='Tanggal')
     premium_line_ids = fields.One2many('master_spbu.premium_line', 'premium_ids', string='Line Items')
 
+class Premium2(models.Model):
+    _name = 'master_spbu.premium2'
+    _description = 'master_spbu.premium2'
+
+    name = fields.Char(string='Name')
+    tanggal = fields.Date(string='Tanggal')
+    premium2_line_ids = fields.One2many('master_spbu.premium2_line', 'premium2_ids', string='Premium2 Line Items')
+
 class PremiumLine(models.Model):
     _name = 'master_spbu.premium_line'
     _description = 'master_spbu.premium_line'
@@ -51,3 +59,14 @@ class PremiumLine(models.Model):
     stock_tangki = fields.Float(string='Stock Tangki', default=0.0)
     selisih = fields.Float(string='Selisih', default=0.0, compute=_selisih)
     akumulasi = fields.Float(string='Akumulasi', default=0.0, compute=_total)
+
+class Premium2Line(models.Model):
+    _name = 'master_spbu.premium2_line'
+    _description = 'master_spbu.premium2_line'
+
+    premium2_ids = fields.Many2one('master_spbu.premium2', string='Premium2')
+    tanggal = fields.Char(string='Tanggal')
+    doa_awal = fields.Float(string='doa awal', default=0.0)
+    tebusan = fields.Float(string='tebusan', default=0.0)
+    kiriman = fields.Float(string='kiriman', default=0.0)
+    sisa_do = fields.Float(string='sisa do', default=0.0)
