@@ -22,6 +22,17 @@
       </field>
     </record>
 
+    <record id="master_spbu_view_tree3" model="ir.ui.view">
+      <field name="name">master_spbu.tree3</field>
+      <field name="model">master_spbu.premium3</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="tanggal"/>
+        </tree>
+      </field>
+    </record>
+
 
 
     <record id='master_spbu_view_form' model='ir.ui.view'>
@@ -79,6 +90,36 @@
                     <field name="tebusan"/>
                     <field name="kiriman"/>
                     <field name="sisa_do"/>
+                  </tree>
+                </field>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+        </field>
+    </record>
+
+    <record id='master_spbu_view_form3' model='ir.ui.view'>
+      <field name="name">master_spbu.form3</field>
+      <field name="model">master_spbu.premium3</field>
+      <field name="arch" type="xml">
+        <form string="Report">
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="tanggal"/>
+            </group>
+            <notebook>
+              <page string="Product">
+                <field name="premium3_line_ids" nonlabel="1" options="{'reload_on_button': true}">
+                  <tree string="Product" editable="bottom" edit="true" create="true" delete="true">
+                    <field name="tanggal"/>
+                    <field name="premium"/>
+                    <field name="solar"/>
+                    <field name="pertamax"/>
+                    <field name="pertalite"/>
+                    <field name="dexlite"/>
+                    <field name="total"/>
                   </tree>
                 </field>
               </page>
