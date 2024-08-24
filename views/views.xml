@@ -13,7 +13,7 @@
 
     <record id="master_spbu_view_tree2" model="ir.ui.view">
       <field name="name">master_spbu.tree2</field>
-      <field name="model">master_spbu.premium2</field>
+      <field name="model">master_spbu.stock</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
@@ -62,8 +62,8 @@
     </record>
     
     <record id='master_spbu_view_form2' model='ir.ui.view'>
-      <field name="name">master_spbu.form2</field>
-      <field name="model">master_spbu.premium2</field>
+      <field name="name">master_spbu.formstock</field>
+      <field name="model">master_spbu.stock</field>
       <field name="arch" type="xml">
         <form string="Report">
           <sheet>
@@ -73,7 +73,7 @@
             </group>
             <notebook>
               <page string="Product">
-                <field name="premium2_line_ids" nonlabel="1" options="{'reload_on_button': true}">
+                <field name="stock_line_ids" nonlabel="1" options="{'reload_on_button': true}">
                   <tree string="Product" editable="bottom" edit="true" create="true" delete="true">
                     <field name="doa_awal"/>
                     <field name="tebusan"/>

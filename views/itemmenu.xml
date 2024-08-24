@@ -11,13 +11,13 @@
             </field>
         </record>
     
-        <record id='premium2_action' model='ir.actions.act_window'>
-            <field name='name'>Premium2</field>
-            <field name='res_model'>master_spbu.premium2</field>
+        <record id='stock_action' model='ir.actions.act_window'>
+            <field name='name'>stock</field>
+            <field name='res_model'>master_spbu.stock</field>
             <field name='view_mode'>tree,form</field>
             <field name='help' type='html'>
                 <p class="o_view_content_smiling_face">
-                    Apa itu
+                    Stock
                 </p>
             </field>
         </record>
@@ -34,10 +34,11 @@
                 parent="parent_report_ids"
                 action="premium_action"/>
             
-            <menuitem id="child_premium2_ids"
-                name="Pengiriman"
+            <menuitem 
+                id="child_stock_ids"
+                name="Stock"
                 sequence="2"
                 parent="parent_report_ids"
-                action="premium2_action"/>
+                action="stock_action"/>
         </data>
 </odoo>
