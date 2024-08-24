@@ -22,6 +22,17 @@
             </field>
         </record>
 
+        <record id='premium3_action' model='ir.actions.act_window'>
+            <field name='name'>tebusan</field>
+            <field name='res_model'>master_spbu.premium3</field>
+            <field name='view_mode'>tree,form</field>
+            <field name='help' type='html'>
+                <p class="o_view_content_smiling_face">
+                    total tebusan
+                </p>
+            </field>
+        </record>
+
 
         <menuitem
             id="parent_report_ids"
@@ -40,5 +51,12 @@
                 sequence="2"
                 parent="parent_report_ids"
                 action="stock_action"/>
+
+            <menuitem 
+                id="child_premium3_ids"
+                name="tebusan"
+                sequence="3"
+                parent="parent_report_ids"
+                action="premium3_action"/>
         </data>
 </odoo>

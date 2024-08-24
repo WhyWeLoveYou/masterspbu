@@ -33,8 +33,6 @@
       </field>
     </record>
 
-
-
     <record id='master_spbu_view_form' model='ir.ui.view'>
       <field name="name">master_spbu.form</field>
       <field name="model">master_spbu.premium</field>
@@ -99,7 +97,7 @@
         </field>
     </record>
 
-    <record id='master_spbu_view_form3' model='ir.ui.view'>
+     <record id='master_spbu_view_form3' model='ir.ui.view'>
       <field name="name">master_spbu.form3</field>
       <field name="model">master_spbu.premium3</field>
       <field name="arch" type="xml">
@@ -126,7 +124,8 @@
             </notebook>
           </sheet>
         </form>
-        </field>
+      </field>
     </record>
+
   </data>
 </odoo>
