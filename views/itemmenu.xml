@@ -54,7 +54,7 @@
 
             <menuitem 
                 id="child_premium3_ids"
-                name="tebusan"
+                name="Tebusan"
                 sequence="3"
                 parent="parent_report_ids"
                 action="premium3_action"/>

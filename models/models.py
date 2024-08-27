@@ -26,6 +26,7 @@ class AkumulasiData(models.Model):
     total_loses = fields.Float(related='akumulasidata_line_ids.loses', string='Total Loses', store=True)
     total_rupiah = fields.Float(related='akumulasidata_line_ids.rupiah', string='Total Rupiah', store=True)
     akumulasidata_line_ids = fields.One2many('master_spbu.akumulasidata_line', 'akumulasidata_ids', string='Line Items')
+    tipe = fields.Selection([('premium', 'Premium'), ('solar', 'Solar'), ('pertamax', 'Pertamax'), ('pertalite', 'Pertalite'), ('dexlite', 'Dexlite')], string='Tipe', default='premium')
 
     @api.depends('tanggal')
     def _compute_month_year(self):
