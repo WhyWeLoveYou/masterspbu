@@ -2,11 +2,13 @@
   <data>
     <record id="master_spbu_view_tree" model="ir.ui.view">
       <field name="name">master_spbu.tree</field>
-      <field name="model">master_spbu.premium</field>
+      <field name="model">master_spbu.akumulasidata</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name"/>
+          <field name="month_year"/>
           <field name="tanggal"/>
+          <field name="sampai_tanggal"/>
+          <field name="status"/>
         </tree>
       </field>
     </record>
@@ -22,39 +24,55 @@
       </field>
     </record>
 
-
-
     <record id='master_spbu_view_form' model='ir.ui.view'>
       <field name="name">master_spbu.form</field>
-      <field name="model">master_spbu.premium</field>
+      <field name="model">master_spbu.akumulasidata</field>
       <field name="arch" type="xml">
-        <form string="Report">
+        <form string="Report" >
+          <header>
+            <button name="action_draft" string="Edit" type="object" class="oe_highlight" attrs="{'invisible': [('status', '!=', 'confirmed')]}"/>
+            <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+            <button name="action_done" string="Done" type="object" class="oe_highlight" attrs="{'invisible': [('status', '!=', 'confirmed')]}"/>
+            <field name="status" widget="statusbar"/>
+          </header>
           <sheet>
-            <group>
-              <field name="name"/>
-              <field name="tanggal"/>
+            <group attrs="{'readonly': [('status', '=', 'confirmed')]}">
+              <field name="month_year" widget="month_year_widget" attrs="{'readonly': [('status', '=', 'confirmed')]}"/>
+              <field name="tanggal" attrs="{'required': [('status', '=', 'draft')], 'readonly': [('status', '=', 'confirmed')]}"/>
+              <field name="sampai_tanggal" attrs="{'required': [('status', '=', 'draft')], 'readonly': [('status', '=', 'confirmed')]}"/>
             </group>
             <notebook>
               <page string="Product">
-                <field name="premium_line_ids" nonlabel="1" options="{'reload_on_button': true}">
-                  <tree string="Product" editable="bottom" edit="true" create="true" delete="true">
-                    <field name="tanggal"/>
-                    <field name="stock_awal"/>
-                    <field name="kiriman"/>
-                    <field name="tera"/>
-                    <field name="t1"/>
-                    <field name="t2"/>
-                    <field name="t3"/>
-                    <field name="t4"/>
-                    <field name="laku"/>
-                    <field name="rupiah"/>
-                    <field name="stock_akhir"/>
-                    <field name="stock_tangki"/>
-                    <field name="selisih"/>
-                    <field name="akumulasi"/>
+                <field name="akumulasidata_line_ids" nolabel="1" options="{'reload_on_button': true}" context="{'parent_status': status}">
+                  <tree string="Product" editable="bottom" attrs="{'readonly': [('parent_status', '=', 'confirmed')], 'create': [('parent_status', '!=', 'confirmed')], 'delete': [('parent_status', '!=', 'confirmed')]}">
+                    <field name="tanggal" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="stock_awal" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="kiriman" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="tera" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="t1" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="t2" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="t3" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="t4" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="laku" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="rupiah" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="stock_akhir" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="stock_tangki" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="selisih" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="akumulasi" attrs="{'readonly': [('parent_status', '=', 'confirmed')]}"/>
+                    <field name="parent_status" invisible="1"/>
                   </tree>
                 </field>
-              </page>
+                  <group colspan="4">
+                      <group class="oe_subtotal_footer oe_right" attrs="{'invisible': [('status', '=', 'draft')]}">
+                        <field name="total_loses"/>
+                        <field name="total_rupiah" class="oe_subtotal_footer"/>
+                          <!-- <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2" attrs="{'readonly': ['|', ('state', '!=', 'draft'), '&amp;', ('move_type', 'not in', ('in_invoice', 'in_refund', 'in_receipt')), ('quick_edit_mode', '=', False)]}"/>
+
+                          <field name="invoice_payments_widget" colspan="2" nolabel="1" widget="payment"/> -->
+                      </group>
+                      <!-- <field name="invoice_outstanding_credits_debits_widget" class="oe_invoice_outstanding_credits_debits" colspan="2" nolabel="1" widget="payment" attrs="{'invisible': [('state', '!=', 'posted')]}"/> -->
+                  </group>
+            </page>
             </notebook>
           </sheet>
         </form>

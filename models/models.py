@@ -1,14 +1,46 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from datetime import datetime
 
-class Premium(models.Model):
-    _name = 'master_spbu.premium'
-    _description = 'master_spbu.premium'
+class AkumulasiData(models.Model):
+    _name = 'master_spbu.akumulasidata'
+    _description = 'master_spbu.akumulasidata'
 
-    name = fields.Char(string='Name')
-    tanggal = fields.Date(string='Tanggal')
-    premium_line_ids = fields.One2many('master_spbu.premium_line', 'premium_ids', string='Line Items')
+    def action_confirm(self):
+        if self.status == 'draft':
+            self.status = 'confirmed'
+
+    def action_draft(self):
+        if self.status == 'confirmed':
+            self.status = 'draft'
+
+    def action_done(self):
+        if self.status == 'confirmed':
+            self.status = 'done'
+    
+    tanggal = fields.Date(string='Tanggal Mulai')
+    sampai_tanggal = fields.Date(string='Tanggal Selesai')
+    month_year = fields.Char(string='Name', compute='_compute_month_year')
+    status = fields.Selection([('draft', 'Draft'), ('confirmed', 'Confirmed'), ('done', 'Done')], string='Status', default='draft')
+    total_loses = fields.Float(related='akumulasidata_line_ids.loses', string='Total Loses', store=True)
+    total_rupiah = fields.Float(related='akumulasidata_line_ids.rupiah', string='Total Rupiah', store=True)
+    akumulasidata_line_ids = fields.One2many('master_spbu.akumulasidata_line', 'akumulasidata_ids', string='Line Items')
+
+    @api.depends('tanggal')
+    def _compute_month_year(self):
+        for record in self:
+            if record.tanggal:
+                record.month_year = record.tanggal.strftime('%B %Y')
+            else:
+                record.month_year = ''
+
+    @api.constrains('tanggal', 'sampai_tanggal')
+    def _check_tanggal(self):
+        for record in self:
+            if record.tanggal and record.sampai_tanggal and record.tanggal > record.sampai_tanggal:
+                raise ValidationError('Tanggal Mulai tidak bisa lebih dari Tanggal Selesai.')
+                self.status = 'draft'
 
 class Premium2(models.Model):
     _name = 'master_spbu.premium2'
@@ -18,33 +50,41 @@ class Premium2(models.Model):
     tanggal = fields.Date(string='Tanggal')
     premium2_line_ids = fields.One2many('master_spbu.premium2_line', 'premium2_ids', string='Premium2 Line Items')
 
-class PremiumLine(models.Model):
-    _name = 'master_spbu.premium_line'
-    _description = 'master_spbu.premium_line'
+class AkumulasiDataLine(models.Model):
+    _name = 'master_spbu.akumulasidata_line'
+    _description = 'master_spbu.akumulasidata_line'
 
-    def _laku(self):
+    def _compute_laku(self):
         for line in self:
             line.laku = line.t1 + line.t2 + line.t3 + line.t4
 
-    def _rupiah(self):
+    def _compute_rupiah(self):
         for line in self:
             line.rupiah = line.laku * 7250
 
-    def _stock_akhir(self):
+    @api.depends('stock_awal', 'kiriman', 'laku')
+    def _compute_stock_akhir(self):
         for line in self:
             line.stock_akhir = line.stock_awal + line.kiriman - line.laku
-
-    def _selisih(self):
+            
+    @api.depends('stock_tangki', 'stock_akhir')
+    def _compute_selisih(self):
         for line in self:
             line.selisih = line.stock_tangki - line.stock_akhir
             if line.selisih < 0:
-                line.selisih = line.selisih * -1
+                line.selisih = abs(line.selisih)
 
-    def _total(self):
+    @api.depends('selisih')
+    def _compute_total(self):
         for line in self:
-            line.akumulasi = line.selisih * 1
-    
-    premium_ids = fields.Many2one('master_spbu.premium', string='Premium')
+            line.akumulasi = line.selisih
+            
+    @api.depends('akumulasidata_ids', 'selisih')
+    def _compute_loses(self):
+        for record in self:
+            record.loses = sum(line.selisih for line in record.akumulasidata_ids.akumulasidata_line_ids)
+
+    akumulasidata_ids = fields.Many2one('master_spbu.akumulasidata', string='Akumulasi Data')
     tanggal = fields.Char(string='Tanggal')
     stock_awal = fields.Float(string='Stock Awal', default=0.0)
     kiriman = fields.Float(string='Kiriman', default=0.0)
@@ -53,12 +93,15 @@ class PremiumLine(models.Model):
     t2 = fields.Float(string='T2', default=0.0)
     t3 = fields.Float(string='T3', default=0.0)
     t4 = fields.Float(string='T4', default=0.0)
-    laku = fields.Float(string='Laku', default=0.0, compute=_laku)
-    rupiah = fields.Float(string='Rupiah', default=0.0, compute=_rupiah)
-    stock_akhir = fields.Float(string='Stock Akhir', default=0.0, compute=_stock_akhir)
+    laku = fields.Float(string='Laku', default=0.0, compute=_compute_laku)
+    rupiah = fields.Float(string='Rupiah', default=0.0, compute=_compute_rupiah)
+    stock_akhir = fields.Float(string='Stock Akhir', default=0.0, compute=_compute_stock_akhir)
     stock_tangki = fields.Float(string='Stock Tangki', default=0.0)
-    selisih = fields.Float(string='Selisih', default=0.0, compute=_selisih)
-    akumulasi = fields.Float(string='Akumulasi', default=0.0, compute=_total)
+    selisih = fields.Float(string='Selisih', default=0.0, compute=_compute_selisih)
+    akumulasi = fields.Float(string='Akumulasi', default=0.0, compute=_compute_total)
+    loses = fields.Float(string='Loses', default=0.0, compute=_compute_loses)
+    parent_status = fields.Selection(related='akumulasidata_ids.status', string='Status', store=True)
+            
 
 class Premium2Line(models.Model):
     _name = 'master_spbu.premium2_line'

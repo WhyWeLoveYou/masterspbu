@@ -1,8 +1,8 @@
 <odoo>
     <data>
         <record id='premium_action' model='ir.actions.act_window'>
-            <field name='name'>akumulasi</field>
-            <field name='res_model'>master_spbu.premium</field>
+            <field name='name'>Akumulasi</field>
+            <field name='res_model'>master_spbu.akumulasidata</field>
             <field name='view_mode'>tree,form</field>
             <field name='help' type='html'>
                 <p class="o_view_content_smiling_face">
@@ -12,12 +12,12 @@
         </record>
     
         <record id='premium2_action' model='ir.actions.act_window'>
-            <field name='name'>Premium2</field>
+            <field name='name'>Stock</field>
             <field name='res_model'>master_spbu.premium2</field>
             <field name='view_mode'>tree,form</field>
             <field name='help' type='html'>
                 <p class="o_view_content_smiling_face">
-                    Apa itu
+                    ...
                 </p>
             </field>
         </record>
@@ -29,13 +29,12 @@
             sequence="5"/>
             <menuitem
                 id="child_premium_ids"
-                name="akumulasi"
+                name="Akumulasi Data"
                 sequence="1"
                 parent="parent_report_ids"
                 action="premium_action"/>
-            
             <menuitem id="child_premium2_ids"
-                name="Pengiriman"
+                name="Stock"
                 sequence="2"
                 parent="parent_report_ids"
                 action="premium2_action"/>
