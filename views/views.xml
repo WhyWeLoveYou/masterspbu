@@ -52,7 +52,7 @@
               <field name="month_year" widget="month_year_widget" attrs="{'readonly': [('status', '!=', 'draft')]}"/>
               <field name="tanggal" attrs="{'required': [('status', '=', 'draft')], 'readonly': [('status', '!=', 'draft')]}"/>
               <field name="sampai_tanggal" attrs="{'required': [('status', '=', 'draft')], 'readonly': [('status', '!=', 'draft')]}"/>
-              <field name="tipe"/>
+              <field name="tipe" attrs="{'readonly': [('status', '!=', 'draft')]}"/>
             </group>
             <notebook>
               <page string="Product">

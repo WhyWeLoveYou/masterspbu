@@ -24,7 +24,7 @@ class AkumulasiData(models.Model):
     month_year = fields.Char(string='Name', compute='_compute_month_year')
     status = fields.Selection([('draft', 'Draft'), ('confirmed', 'Confirmed'), ('done', 'Done')], string='Status', default='draft')
     total_loses = fields.Float(related='akumulasidata_line_ids.loses', string='Total Loses', store=True)
-    total_rupiah = fields.Float(related='akumulasidata_line_ids.rupiah', string='Total Rupiah', store=True)
+    total_rupiah = fields.Float(related='akumulasidata_line_ids.totalrupiah', string='Total Rupiah', store=True)
     akumulasidata_line_ids = fields.One2many('master_spbu.akumulasidata_line', 'akumulasidata_ids', string='Line Items')
     tipe = fields.Selection([('premium', 'Premium'), ('solar', 'Solar'), ('pertamax', 'Pertamax'), ('pertalite', 'Pertalite'), ('dexlite', 'Dexlite')], string='Tipe', default='premium')
 
@@ -72,6 +72,11 @@ class AkumulasiDataLine(models.Model):
         for line in self:
             line.rupiah = line.laku * 7250
 
+    @api.depends('akumulasidata_ids', 'rupiah')
+    def _compute_total_rupiah(self):
+        for record in self:
+            record.totalrupiah = sum(line.rupiah for line in record.akumulasidata_ids.akumulasidata_line_ids)
+
     @api.depends('stock_awal', 'kiriman', 'laku')
     def _compute_stock_akhir(self):
         for line in self:
@@ -110,6 +115,7 @@ class AkumulasiDataLine(models.Model):
     selisih = fields.Float(string='Selisih', default=0.0, compute=_compute_selisih)
     akumulasi = fields.Float(string='Akumulasi', default=0.0, compute=_compute_total)
     loses = fields.Float(string='Loses', default=0.0, compute=_compute_loses)
+    totalrupiah = fields.Float(string='Total Rupiah', default=0.0, compute=_compute_total_rupiah)
     parent_status = fields.Selection(related='akumulasidata_ids.status', string='Status', store=True)
             
 
