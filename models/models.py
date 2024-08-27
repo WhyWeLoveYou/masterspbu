@@ -42,13 +42,22 @@ class AkumulasiData(models.Model):
                 raise ValidationError('Tanggal Mulai tidak bisa lebih dari Tanggal Selesai.')
                 self.status = 'draft'
 
-class Premium2(models.Model):
-    _name = 'master_spbu.premium2'
-    _description = 'master_spbu.premium2'
+class Stock(models.Model):
+    _name = 'master_spbu.stock'
+    _description = 'master_spbu.stock'
 
     name = fields.Char(string='Name')
     tanggal = fields.Date(string='Tanggal')
-    premium2_line_ids = fields.One2many('master_spbu.premium2_line', 'premium2_ids', string='Premium2 Line Items')
+    stock_line_ids = fields.One2many('master_spbu.stock_line', 'stock_ids', string='stock Line Items')
+
+class Premium3(models.Model):
+    _name = 'master_spbu.premium3'
+    _description = 'master_spbu.premium3'
+
+    name = fields.Char(string='Name')
+    tanggal = fields.Date(string='Tanggal')
+    premium3_line_ids = fields.One2many('master_spbu.premium3_line', 'premium3_ids', string='Premium3 Line Items')
+
 
 class AkumulasiDataLine(models.Model):
     _name = 'master_spbu.akumulasidata_line'
@@ -103,14 +112,34 @@ class AkumulasiDataLine(models.Model):
     parent_status = fields.Selection(related='akumulasidata_ids.status', string='Status', store=True)
             
 
-class Premium2Line(models.Model):
-    _name = 'master_spbu.premium2_line'
-    _description = 'master_spbu.premium2_line'
+class StockLine(models.Model):
+    _name = 'master_spbu.stock_line'
+    _description = 'master_spbu.stock_line'
 
-    premium2_ids = fields.Many2one('master_spbu.premium2', string='Premium2')
+    stock_ids = fields.Many2one('master_spbu.stock', string='stock')
     tanggal = fields.Char(string='Tanggal')
     doa_awal = fields.Float(string='doa awal', default=0.0)
     tebusan = fields.Float(string='tebusan', default=0.0)
     kiriman = fields.Float(string='kiriman', default=0.0)
     sisa_do = fields.Float(string='sisa do', default=0.0)
+
+class Premium3Line(models.Model):
+    _name = 'master_spbu.premium3_line'
+    _description = 'master_spbu.premium3_line'
+
+    premium3_ids = fields.Many2one('master_spbu.premium3', string='Premium3')
+    tanggal = fields.Char(string='Tanggal')
+    premium = fields.Float(string='Premium', default=0.0)
+    solar = fields.Float(string='Solar', default=0.0)
+    pertamax = fields.Float(string='Pertamax', default=0.0)
+    pertalite = fields.Float(string='Pertalite', default=0.0)
+    dexlite = fields.Float(string='Dexlite', default=0.0)
+
+    total = fields.Float(string='Total Tebusan', compute='_compute_total_tebusan')
+
+    @api.depends('premium', 'solar', 'pertamax', 'pertalite', 'dexlite')
+    def _compute_total_tebusan(self):
+        for record in self:
+            record.total = record.premium + record.solar + record.pertamax + record.pertalite + record.dexlite
+
 
